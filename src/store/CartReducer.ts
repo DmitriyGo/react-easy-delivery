@@ -6,21 +6,22 @@ export enum CartReducerActionType {
 }
 
 export type CartState = {
-    items: IItem[],
-    totalAmount: number
+    items: IItem[];
+    totalAmount: number;
 };
 
-type AddCartAction = {
-    type: CartReducerActionType.ADD_CART,
-    payload: IItem
+export type AddCartActionType = {
+    type: CartReducerActionType.ADD_CART;
+    payload: IItem;
 }
 
-type RemoveCartAction = {
-    type: CartReducerActionType.REMOVE_CART,
-    payload: string
+export type RemoveCartActionType = {
+    type: CartReducerActionType.REMOVE_CART;
+    payload: string;
 }
 
-export type CartAction = AddCartAction | RemoveCartAction;
+type CartAction = AddCartActionType | RemoveCartActionType;
+
 
 export const CartReducer: Reducer<CartState, CartAction> = (state, action) => {
     switch (action.type) {

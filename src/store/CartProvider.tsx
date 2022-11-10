@@ -1,6 +1,7 @@
-import React, { FC, ReactNode, useReducer, useState } from 'react';
+import React, { FC, ReactNode, useReducer } from 'react';
 import CartContext from './cart-context';
-import { CartReducer, CartReducerActionType, CartState } from './CartReducer';
+import { CartReducer, CartState } from './CartReducer';
+import { AddCartAction, RemoveCartAction } from './CartActionCreators';
 
 interface CartProviderProps {
     children: ReactNode;
@@ -18,10 +19,10 @@ const CartProvider: FC<Props> = ({ children }) => {
     const [cartState, cartDispatch] = useReducer(CartReducer, defaultCartState);
 
     const addItemToCartHandler = (item: IItem) => {
-        cartDispatch({ type: CartReducerActionType.ADD_CART, payload: item });
+        cartDispatch(AddCartAction(item));
     };
     const removeItemToCartHandler = (id: string) => {
-        cartDispatch({ type: CartReducerActionType.REMOVE_CART, payload: id });
+        cartDispatch(RemoveCartAction(id));
     };
 
     const cartContext = {
