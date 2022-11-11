@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/react-easy-delivery/static/css/main.348699b2.css",
+    "main.js": "/react-easy-delivery/static/js/main.d05a8fdf.js",
+    "static/media/meals.jpg": "/react-easy-delivery/static/media/meals.fd6df1ce4fbd69f02ca5.jpg",
+    "index.html": "/react-easy-delivery/index.html",
+    "main.348699b2.css.map": "/react-easy-delivery/static/css/main.348699b2.css.map",
+    "main.d05a8fdf.js.map": "/react-easy-delivery/static/js/main.d05a8fdf.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.348699b2.css",
+    "static/js/main.d05a8fdf.js"
+  ]
+}
