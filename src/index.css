@@ -28,12 +28,14 @@ p,
 ul[class],
 ol[class],
 li,
+ul,
 figure,
 figcaption,
 blockquote,
 dl,
 dd {
     margin: 0;
+    padding: 0;
 }
 
 /* Выставляем основные настройки по-умолчанию для body */

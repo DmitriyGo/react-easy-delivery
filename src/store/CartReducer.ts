@@ -1,8 +1,9 @@
 import { Reducer } from 'react';
 
 export enum CartReducerActionType {
-    ADD_CART,
-    REMOVE_CART,
+    ADD_CART = 'ADD_CART',
+    REMOVE_CART = 'REMOVE_CART',
+    CLEAR = 'CLEAR',
 }
 
 export type CartState = {
@@ -20,7 +21,11 @@ export type RemoveCartActionType = {
     payload: string;
 }
 
-type CartAction = AddCartActionType | RemoveCartActionType;
+export type ClearCartActionType = {
+    type: CartReducerActionType.CLEAR;
+}
+
+type CartAction = AddCartActionType | RemoveCartActionType | ClearCartActionType;
 
 
 export const CartReducer: Reducer<CartState, CartAction> = (state, action) => {
@@ -74,6 +79,13 @@ export const CartReducer: Reducer<CartState, CartAction> = (state, action) => {
             return {
                 items: updatedItems,
                 totalAmount: updatedTotalAmount,
+            };
+        }
+
+        case CartReducerActionType.CLEAR: {
+            return {
+                items: [],
+                totalAmount: 0,
             };
         }
 

@@ -1,8 +1,10 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, MouseEvent, useContext, useState } from 'react';
 import classes from './Cart.module.css';
 import Modal from '../UI/Modal/Modal';
 import CartContext from '../../store/cart-context';
 import CartItem from './CartItem';
+import Checkout from './Checkout';
+import axios from 'axios';
 
 interface CartProps {
     onCartHide: () => void;
@@ -11,6 +13,10 @@ interface CartProps {
 type Props = CartProps;
 
 const Cart: FC<Props> = ({ onCartHide }) => {
+
+    const [isCheckout, setIsCheckout] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [didSubmit, setDidSubmit] = useState(false);
 
     const cartCtx = useContext(CartContext);
 
@@ -41,17 +47,49 @@ const Cart: FC<Props> = ({ onCartHide }) => {
         </ul>
     );
 
+    const orderHandler = (event: MouseEvent<HTMLButtonElement>) => {
+        setIsCheckout(true);
+    };
+
+    const submitOrderHandler = async (user: IUser) => {
+        setIsSubmitting(true);
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/orders.json`, JSON.stringify({
+            user,
+            orderedItems: cartCtx.items,
+        }));
+
+        setIsSubmitting(false);
+        setDidSubmit(true);
+        cartCtx.clear();
+    };
+
+    const cartModalContent = <>
+        {cartItems}
+        <div className={classes.total}>
+            <span>Total Amount</span>
+            <span>{totalAmount}</span>
+        </div>
+        {isCheckout ? <Checkout onCartHide={onCartHide} onSubmit={submitOrderHandler} /> : null}
+        {!isCheckout ? <div className={classes.actions}>
+            <button className={classes['button--alt']} onClick={onCartHide}>Close</button>
+            {hasItems && <button className={classes.button} onClick={orderHandler}>Order</button>}
+        </div> : null}
+    </>;
+
+    const isSubmittingModalContent = <p>Sending order data...</p>;
+
+    const didSubmittingModalContent = <>
+        <p>Successfully sent the order!</p>
+        <div className={classes.actions}>
+            <button className={classes.button} onClick={onCartHide}>Close</button>
+        </div>
+    </>;
+
     return (
         <Modal onCartHide={onCartHide}>
-            {cartItems}
-            <div className={classes.total}>
-                <span>Total Amount</span>
-                <span>{totalAmount}</span>
-            </div>
-            <div className={classes.actions}>
-                <button className={classes['button--alt']} onClick={onCartHide}>Close</button>
-                {hasItems && <button className={classes.button}>Order</button>}
-            </div>
+            {!isSubmitting && !didSubmit ? cartModalContent : null}
+            {isSubmitting ? isSubmittingModalContent : null}
+            {!isSubmitting && didSubmit ? didSubmittingModalContent : null}
         </Modal>
     );
 };
